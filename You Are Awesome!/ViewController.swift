@@ -24,47 +24,16 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
-
-    @IBAction func showMessagePressed(_ sender: UIButton) {
-        
-        let messages = ["You Are Awesome!",
-                        "You Are Great!",
-                        "You Are Fantastic!",
-                        "When the Genius Bar needs help, they call you",
-                        "You brighten my day!", "You are da bomb!",
-                        "Hey, fabulous!", "You are tremendous !",
-                        "You've got the design skills of Jony Ive!",
-                        "I can't wait to download your app!"]
-        
-       // var newIndex = -1
-        var newIndex: Int // declares but doesn't initialize newIndex
-        
-        //show a message
+    
+    func nonRepeatingRandom(lastNumber: Int, maxValue: Int) -> Int {
+        var newIndex: Int
         repeat{
-            newIndex = Int.random(in: 0..<messages.count)
-        } while index == newIndex
-        
-        index = newIndex
-        messageLabel.text = messages[index]
-        
-        //show an image
-        repeat {
-            newIndex = Int.random(in: 0..<numberOfImages)
-        } while imageIndex == newIndex
-        
-        imageIndex = newIndex
-        awesomeImageView.image = UIImage(named: "image\(imageIndex)")
-        
-        // Get a random number to use in our soundName file
-        repeat {
-            newIndex = Int.random(in: 0..<numberOfSounds)
-        } while soundIndex == newIndex
-        
-        imageIndex = newIndex
-        
-        //play a sound
-        var soundName = "sound\(soundIndex)"
-        
+            newIndex = Int.random(in: 0..<maxValue)
+        } while lastNumber == newIndex
+       return newIndex
+    }
+
+    func playSound(soundName: String) {
         //can we load in the file soundName?
         if let sound = NSDataAsset(name: soundName) {
             //check if sound.data is a sound file
@@ -80,28 +49,33 @@ class ViewController: UIViewController {
             //if reading in the NSDataAsset didn't work, tell the developer / report the error
             print("ERROR: file \(soundName) didn't load")
         }
+    }
+    
+    @IBAction func showMessagePressed(_ sender: UIButton) {
         
-//        messageLabel.text = messages.randomElement()!
+        let messages = ["You Are Awesome!",
+                        "You Are Great!",
+                        "You Are Fantastic!",
+                        "When the Genius Bar needs help, they call you",
+                        "You brighten my day!", "You are da bomb!",
+                        "Hey, fabulous!", "You are tremendous !",
+                        "You've got the design skills of Jony Ive!",
+                        "I can't wait to download your app!"]
         
-//        messageLabel.text = messages[index]
-//
-//        if index == messages.count - 1 {
-//            index = 0
-//        } else {
-//            index = index + 1
-//        }
+        //show a message
+        index = nonRepeatingRandom(lastNumber: index, maxValue: messages.count)
+        messageLabel.text = messages[index]
         
-//        let message1 = "You Are Fantastic!!!"
-//        let message2 = "You Are Great!"
-//        let message3 = "You Are Amazing!"
-//
-//        if messageLabel.text == message1 {
-//            messageLabel.text = message2
-//        } else if messageLabel.text == message2 {
-//            messageLabel.text = message3
-//        } else {
-//            messageLabel.text = message1
-//        }
+        //show an image
+        imageIndex = nonRepeatingRandom(lastNumber: imageIndex, maxValue: numberOfImages)
+        awesomeImageView.image = UIImage(named: "image\(imageIndex)")
+        
+        // Get a random number to use in our soundName file
+        soundIndex = nonRepeatingRandom(lastNumber: soundIndex, maxValue: numberOfSounds)
+        
+        //Play a sound
+        let soundName = "sound\(soundIndex)"
+        playSound(soundName: soundName)
     }
     
 }
