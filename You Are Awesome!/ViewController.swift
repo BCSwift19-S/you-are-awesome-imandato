@@ -7,14 +7,18 @@
 //
 
 import UIKit
+import AVFoundation
 
 class ViewController: UIViewController {
 
     @IBOutlet weak var awesomeImageView: UIImageView!
     @IBOutlet weak var messageLabel: UILabel!
+    var awesomePlayer = AVAudioPlayer()
     var index = -1
     var imageIndex = -1
+    var soundIndex = -1
     let numberOfImages = 10
+    let numberOfSounds = 6
     
     // Code below executes when the app's view first loads
     override func viewDidLoad() {
@@ -35,6 +39,7 @@ class ViewController: UIViewController {
        // var newIndex = -1
         var newIndex: Int // declares but doesn't initialize newIndex
         
+        //show a message
         repeat{
             newIndex = Int.random(in: 0..<messages.count)
         } while index == newIndex
@@ -42,12 +47,39 @@ class ViewController: UIViewController {
         index = newIndex
         messageLabel.text = messages[index]
         
+        //show an image
         repeat {
             newIndex = Int.random(in: 0..<numberOfImages)
         } while imageIndex == newIndex
         
         imageIndex = newIndex
         awesomeImageView.image = UIImage(named: "image\(imageIndex)")
+        
+        // Get a random number to use in our soundName file
+        repeat {
+            newIndex = Int.random(in: 0..<numberOfSounds)
+        } while soundIndex == newIndex
+        
+        imageIndex = newIndex
+        
+        //play a sound
+        var soundName = "sound\(soundIndex)"
+        
+        //can we load in the file soundName?
+        if let sound = NSDataAsset(name: soundName) {
+            //check if sound.data is a sound file
+            do {
+                try awesomePlayer = AVAudioPlayer(data: sound.data)
+                awesomePlayer.play()
+            } catch {
+                // if sound.data is not a valid audio file
+                print ("ERROR: data in \(soundName) couln't be played as a sound.")
+            }
+            
+        } else{
+            //if reading in the NSDataAsset didn't work, tell the developer / report the error
+            print("ERROR: file \(soundName) didn't load")
+        }
         
 //        messageLabel.text = messages.randomElement()!
         
